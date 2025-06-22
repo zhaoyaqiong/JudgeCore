@@ -1,12 +1,29 @@
-
 name: JudgeCore CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - run: sudo apt-get update && sudo apt-get install -y cmake libseccomp-dev libjansson-dev
-    - run: mkdir build && cd build && cmake .. && make
+      - name: 📥 Checkout code
+        uses: actions/checkout@v2
+
+      - name: 🧰 Set up dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential cmake libseccomp-dev libjansson-dev python3 python3-pip
+
+      - name: 🛠️ Build project with CMake
+        run: |
+          cmake -B build
+          cmake --build build
+
+#      - name: 🧪 Run tests
+#        run: |
+#          python3 run_tests.py
