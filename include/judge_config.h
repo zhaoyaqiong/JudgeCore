@@ -7,6 +7,7 @@
 #define MAX_PATH_LEN 512
 
 typedef struct {
+    char config_path[MAX_PATH_LEN];
     char exe_path[MAX_PATH_LEN];
     char input_path[MAX_PATH_LEN];
     char output_path[MAX_PATH_LEN];

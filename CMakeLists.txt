@@ -6,6 +6,7 @@ set(CMAKE_C_STANDARD 11)
 include_directories(include)
 find_library(SECCOMP_LIB seccomp)
 find_library(JSON_LIB jansson)
+
 add_executable(judgecore
     src/main.c
     src/config.c
@@ -15,8 +16,10 @@ add_executable(judgecore
     src/sandbox.c
     src/seccomp.c
     src/syscall_profiles.c
+    src/cli.c
+    src/argtable3.c
 )
-
+target_sources(judgecore PRIVATE src/argtable3.c)
 add_library(judgecore_shared SHARED
     src/config.c
     src/judge.c
@@ -25,6 +28,8 @@ add_library(judgecore_shared SHARED
     src/sandbox.c
     src/seccomp.c
     src/syscall_profiles.c
+    src/cli.c
+    src/argtable3.c
 )
 
 target_link_libraries(judgecore ${SECCOMP_LIB} ${JSON_LIB})

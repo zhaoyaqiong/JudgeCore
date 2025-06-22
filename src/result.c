@@ -14,12 +14,14 @@ void fill_user_output(const judge_config_t *cfg, judge_result_t *res) {
     fseek(fp, 0, SEEK_END);
     long size = ftell(fp);
     fseek(fp, 0, SEEK_SET);
-
-    if (size > cfg->max_output_size) {
-        res->output_truncated = true;
-        size = cfg->max_output_size;
-    } else {
-        res->output_truncated = false;
+    if(cfg->max_output_size != -1)
+    {
+        if (size > cfg->max_output_size) {
+            res->output_truncated = true;
+            size = cfg->max_output_size;
+        } else {
+            res->output_truncated = false;
+        }
     }
 
     res->user_output = (char *)malloc(size + 1);
