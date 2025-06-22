@@ -5,6 +5,10 @@
 
 #define MAX_ENV_VARS 32
 #define MAX_PATH_LEN 512
+typedef struct {
+    bool debug;
+    char log_file_path[MAX_PATH_LEN];
+} global_config_t;
 
 typedef struct {
     char config_path[MAX_PATH_LEN];

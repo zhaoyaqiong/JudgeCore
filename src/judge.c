@@ -8,8 +8,7 @@ extern void fill_user_output(const judge_config_t *cfg, judge_result_t *res);
 int run_task(const judge_config_t *cfg, judge_result_t *res) {
     if (!cfg || !res) return -1;
 
-    log_init("judge.log", cfg->enable_debug);
-    log_debug("Judging started. Executable: %s", cfg->exe_path);
+    log_info("Judging started. Executable: %s", cfg->exe_path);
 
     int ret = run_sandbox(cfg, res);
 
@@ -19,7 +18,7 @@ int run_task(const judge_config_t *cfg, judge_result_t *res) {
         res->user_output = NULL;
     }
 
-    log_debug("Judging finished. Status: %s, Time: %dms, Memory: %dKB",
+    log_info("Judging finished. Status: %s, Time: %dms, Memory: %dKB",
               res->status, res->time_used_ms, res->memory_used_kb);
 
     log_close();

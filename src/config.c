@@ -1,10 +1,29 @@
 #include "judge_config.h"
 #include "judge_log.h"
-
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <jansson.h>
+
+#define SET_STR_FIELD(json, key, dst) do { \
+        json_t *tmp = json_object_get(json, key); \
+        if (tmp && json_is_string(tmp)) { \
+            strncpy(dst, json_string_value(tmp), sizeof(dst)); \
+        } \
+    } while (0)
+
+int load_global_config_from_json(const char *path, global_config_t *cfg)
+{
+    json_error_t error;
+    json_t *root = json_load_file(path, 0, &error);
+    if (!root) {
+        fprintf(stderr, "Failed to load JSON config: %s\n", error.text);
+        cfg->debug = false;
+        strncpy(cfg->log_file_path, "judge.log", 10);
+        return -1;
+    }
+    SET_STR_FIELD(root, "log_path", cfg->log_file_path);
+    cfg->debug = json_is_true(json_object_get(root, "debug"));
+    return 0;
+}
 
 // 从 JSON 文件加载配置信息
 int load_config_from_json(const char *path, judge_config_t *cfg) {
@@ -14,13 +33,6 @@ int load_config_from_json(const char *path, judge_config_t *cfg) {
         log_error("Failed to load JSON config: %s", error.text);
         return -1;
     }
-
-    #define SET_STR_FIELD(json, key, dst) do { \
-        json_t *tmp = json_object_get(json, key); \
-        if (tmp && json_is_string(tmp)) { \
-            strncpy(dst, json_string_value(tmp), sizeof(dst)); \
-        } \
-    } while (0)
 
     SET_STR_FIELD(root, "exe_path", cfg->exe_path);
     SET_STR_FIELD(root, "input_path", cfg->input_path);
@@ -37,8 +49,6 @@ int load_config_from_json(const char *path, judge_config_t *cfg) {
     cfg->max_output_size = json_integer_value(json_object_get(root, "max_output_size"));
     cfg->uid = json_integer_value(json_object_get(root, "uid"));
     cfg->gid = json_integer_value(json_object_get(root, "gid"));
-    // Removed enable_syscall_filter assignment as requested
-    cfg->enable_debug = json_is_true(json_object_get(root, "enable_debug"));
     cfg->include_output = json_is_true(json_object_get(root, "include_output"));
 
     // 必填字段校验

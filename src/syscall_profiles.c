@@ -1,7 +1,6 @@
 #include "syscall_profiles.h"
 #include <string.h>
 #include <seccomp.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 
 // 注册一个用于 C 语言安全运行环境的系统调用白名单

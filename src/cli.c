@@ -6,8 +6,6 @@
 #include "cli.h"
 #include "argtable3.h"
 #include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 int parse_arguments(int argc, char *argv[], judge_config_t *cfg) {
     struct arg_lit  *help     = arg_lit0(NULL, "help", "Show help");

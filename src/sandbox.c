@@ -125,7 +125,6 @@ int run_sandbox(const judge_config_t *cfg, judge_result_t *res) {
     if (cfg->max_stack_kb == 0) ((judge_config_t *)cfg)->max_stack_kb = -1;
     if (cfg->max_processes == 0) ((judge_config_t *)cfg)->max_processes = -1;
 
-    printf("max cpu time %d, max real time %d\n", cfg->max_cpu_time, cfg->max_real_time);
     int pid = fork();
     if (pid < 0) {
         strcpy(res->status, "SystemError");
