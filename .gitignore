@@ -1,0 +1,20 @@
+.DS_Store
+.idea
+# CMake
+/build
+/cmake-build-*/
+CMakeFiles/
+Makefile
+CMakeCache.txt
+*.o
+*.out
+*.log
+
+# Output files
+*.txt
+output.txt
+
+# Python cache
+__pycache__/
+*.pyc
+.venv/
